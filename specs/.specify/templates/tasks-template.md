@@ -93,6 +93,12 @@ Examples of foundational tasks (adjust based on your project):
 > 4. **From Success Criteria (spec.md)**: Create tests that verify measurable outcomes (SC-XXX)
 > 5. **From Error Handling Requirements**: Create tests for all error scenarios (FR-006, EC #1, etc.)
 > 6. **From Constraint Requirements**: Create tests for database/validation constraints (FR-007, FR-008, FR-009, etc.)
+> 7. **From API Contracts (contracts/*.yaml)**: Create contract tests for ALL API endpoints (REQUIRED if contracts exist per constitution)
+>    - Response schema validation (all fields, types, nullable constraints)
+>    - Status code verification (200, 400, 500, etc. as specified in contract)
+>    - Content-Type header verification
+>    - Field validation (required fields present, nullable fields handled correctly)
+>    - Error response schema validation
 > 
 > **Test Task Format**: `T[ID][SubID] [P?] [US#] [Test Type]: [Specific Scenario] - [Expected Behavior]`
 > - Include requirement reference: `**Requirement**: FR-XXX or AS #X or EC #X`
@@ -134,8 +140,9 @@ Examples of foundational tasks (adjust based on your project):
     * 200 OK responses with data (AS #1, AS #3)
     * 200 OK responses with empty data (AS #2, FR-005)
     * 500 error responses (FR-006, EC #1)
-    * Contract compliance (response matches OpenAPI spec)
-    * Content type verification
+    * Contract compliance (response matches OpenAPI spec) - REQUIRED per constitution
+    * Content type verification - REQUIRED per constitution
+    * Field validation (required, nullable, types) - REQUIRED per constitution
 -->
 
 - [ ] T011a [P] [US1] Integration test: [HTTP Method] [endpoint] returns 200 OK with [data]
@@ -153,10 +160,30 @@ Examples of foundational tasks (adjust based on your project):
   - **File**: tests/integration/[endpoint]_tests.[ext]
   - **Test**: Given database unavailable, when [HTTP Method] [endpoint] called, then returns 500 with error message
 
-- [ ] T011d [P] [US1] Integration test: [HTTP Method] [endpoint] response matches OpenAPI contract
-  - **Requirement**: [Contract validation]
+- [ ] T011d [P] [US1] Contract test: [HTTP Method] [endpoint] response schema matches OpenAPI contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
   - **File**: tests/integration/[endpoint]_tests.[ext]
-  - **Test**: When [HTTP Method] [endpoint] called, then response schema matches contracts/[api].yaml
+  - **Test**: When [HTTP Method] [endpoint] called, then response schema matches contracts/[api].yaml (all fields, types, nullable constraints)
+
+- [ ] T011e [P] [US1] Contract test: [HTTP Method] [endpoint] returns correct Content-Type header
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then Content-Type header matches contract specification
+
+- [ ] T011f [P] [US1] Contract test: [HTTP Method] [endpoint] validates required fields per contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then response contains all required fields as specified in contract
+
+- [ ] T011g [P] [US1] Contract test: [HTTP Method] [endpoint] validates nullable/optional fields per contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called with nullable fields, then response handles null values correctly per contract
+
+- [ ] T011h [P] [US1] Contract test: [HTTP Method] [endpoint] returns correct status codes per contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then status codes (200, 400, 500, etc.) match contract specification
 
 #### Frontend Service Tests
 
@@ -223,7 +250,7 @@ Examples of foundational tasks (adjust based on your project):
 | Implementation Task | Test Tasks That Verify It | Requirements Covered |
 |---------------------|---------------------------|----------------------|
 | T016: Implement [Service] | T010a, T010b, T010c | FR-XXX, AS #X, EC #X |
-| T017: Implement [endpoint] | T011a, T011b, T011c, T011d | FR-XXX, AS #X, EC #X |
+| T017: Implement [endpoint] | T011a, T011b, T011c, T011d, T011e, T011f, T011g, T011h | FR-XXX, AS #X, EC #X, Contract validation |
 | T018: Add error handling | T010c, T011c, T012b, T013c | FR-006, EC #1 |
 | T019: Add logging | [Logging tests if applicable] | [Requirements] |
 
@@ -260,6 +287,16 @@ Examples of foundational tasks (adjust based on your project):
   - **File**: tests/integration/[endpoint]_tests.[ext]
   - **Test**: Given [condition], when [HTTP Method] [endpoint] called, then returns 200 with correct data
 
+- [ ] T021b [P] [US2] Contract test: [HTTP Method] [endpoint] response schema matches OpenAPI contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then response schema matches contracts/[api].yaml
+
+- [ ] T021c [P] [US2] Contract test: [HTTP Method] [endpoint] returns correct status codes and Content-Type per contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then status codes and Content-Type header match contract
+
 #### Frontend Service Tests
 
 - [ ] T022a [P] [US2] Unit test: [Service].[Method]() makes HTTP [Method] request to [endpoint]
@@ -289,7 +326,7 @@ Examples of foundational tasks (adjust based on your project):
 | Implementation Task | Test Tasks That Verify It | Requirements Covered |
 |---------------------|---------------------------|----------------------|
 | T025: Implement [Service] | T020a, [additional tests] | FR-XXX, AS #X |
-| T026: Implement [endpoint] | T021a, [additional tests] | FR-XXX, AS #X |
+| T026: Implement [endpoint] | T021a, T021b, T021c, [additional tests] | FR-XXX, AS #X, Contract validation |
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -324,6 +361,16 @@ Examples of foundational tasks (adjust based on your project):
   - **File**: tests/integration/[endpoint]_tests.[ext]
   - **Test**: Given [condition], when [HTTP Method] [endpoint] called, then returns 200 with correct data
 
+- [ ] T029b [P] [US3] Contract test: [HTTP Method] [endpoint] response schema matches OpenAPI contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then response schema matches contracts/[api].yaml
+
+- [ ] T029c [P] [US3] Contract test: [HTTP Method] [endpoint] returns correct status codes and Content-Type per contract
+  - **Requirement**: [Contract validation - REQUIRED if contracts/[api].yaml exists per constitution]
+  - **File**: tests/integration/[endpoint]_tests.[ext]
+  - **Test**: When [HTTP Method] [endpoint] called, then status codes and Content-Type header match contract
+
 #### Frontend Service Tests
 
 - [ ] T030a [P] [US3] Unit test: [Service].[Method]() makes HTTP [Method] request to [endpoint]
@@ -352,7 +399,7 @@ Examples of foundational tasks (adjust based on your project):
 | Implementation Task | Test Tasks That Verify It | Requirements Covered |
 |---------------------|---------------------------|----------------------|
 | T033: Implement [Service] | T028a, [additional tests] | FR-XXX, AS #X |
-| T034: Implement [endpoint] | T029a, [additional tests] | FR-XXX, AS #X |
+| T034: Implement [endpoint] | T029a, T029b, T029c, [additional tests] | FR-XXX, AS #X, Contract validation |
 
 **Checkpoint**: All user stories should now be independently functional
 

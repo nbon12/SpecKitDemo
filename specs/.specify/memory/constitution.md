@@ -1,15 +1,14 @@
 <!--
 Sync Impact Report:
-Version: 1.1.0 → 1.2.0
+Version: 1.2.0 → 1.3.0
 Added Sections:
-  - Database Migration Requirements (within Development Workflow)
-  - Naming Conventions (within Development Workflow)
+  - API Contract Testing (within Core Principles)
 Modified Sections:
-  - Development Tooling Preferences (added EF Core Migrations requirement)
+  - None
 Templates Updated:
-  ✅ plan-template.md (Constitution Check section - no changes needed)
-  ✅ spec-template.md (verified alignment - no changes needed)
-  ✅ tasks-template.md (verified alignment - no changes needed)
+  ✅ plan-template.md (added Testing Strategy section)
+  ✅ tasks-template.md (expanded contract testing requirements)
+  ✅ spec-template.md (no changes needed)
 -->
 
 # Spec Kit Demo Constitution
@@ -27,6 +26,20 @@ Always write tests first, then implement minimum code to make tests pass. Red-Gr
 Test data must be namespaced and isolated per test run. Tests must assume parallel execution and potential stale data from previous runs. Queries must only verify data from the current test run's namespace. Each test must be independently executable without dependencies on other tests.
 
 **Rationale**: Enables reliable parallel test execution and prevents test interdependencies that cause flaky test results.
+
+### API Contract Testing (REQUIRED for REST APIs)
+
+When API contracts are defined (OpenAPI/Swagger specifications in contracts/ directory), contract testing is REQUIRED. All API endpoints MUST have contract tests that validate:
+- Response schema matches the OpenAPI specification
+- Status codes match the contract (200, 400, 500, etc.)
+- Content-Type headers match the contract
+- Required fields are present and correctly typed
+- Nullable/optional fields are handled correctly
+- Error response schemas match the contract
+
+Contract tests must be written as part of integration testing and must pass before API implementation is considered complete.
+
+**Rationale**: Ensures API implementation matches the documented contract, prevents breaking changes, enables frontend/backend parallel development, and maintains API consistency across versions.
 
 ### Technology Stack Standards
 
@@ -102,4 +115,4 @@ When naming project artifacts that require a project name (e.g., .NET API projec
 
 Constitution supersedes all other practices and guidelines. Amendments require documentation, justification, and approval. All PRs and reviews must verify compliance with constitution principles. Complexity must be justified and documented. Violations of constitution principles must be addressed before merge.
 
-**Version**: 1.2.0 | **Ratified**: 2025-02-04 | **Last Amended**: 2026-02-04
+**Version**: 1.3.0 | **Ratified**: 2025-02-04 | **Last Amended**: 2026-02-04

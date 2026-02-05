@@ -63,10 +63,71 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [x] T018 [P] [US1] Create unit test for UserService.GetUsers() in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs
-- [x] T019 [P] [US1] Create integration test for GET /api/users endpoint in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
-- [x] T020 [P] [US1] Create unit test for UserService in frontend/spec-kit-demo/src/app/services/user.service.spec.ts - test HTTP call to /api/users
-- [x] T021 [P] [US1] Create component test for UserListComponent in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+#### Backend Unit Tests
+
+- [x] T018 [P] [US1] Unit test: UserService.GetUsersAsync() returns all users when users exist in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs
+  - **Requirement**: FR-002, FR-004, AS #1, AS #3
+  - **Test**: Given 3 users in database, when GetUsersAsync() called, then returns list with 3 users containing correct username and email
+
+- [x] T018b [P] [US1] Unit test: UserService.GetUsersAsync() returns empty list when no users exist in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs
+  - **Requirement**: FR-005, AS #2, SC-004
+  - **Test**: Given empty database, when GetUsersAsync() called, then returns empty list
+
+#### Backend Integration Tests
+
+- [x] T019 [P] [US1] Integration test: GET /api/users returns 200 OK with user list in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: FR-001, FR-002, FR-004, AS #1, AS #3
+  - **Test**: Given users exist in database, when GET /api/users called, then returns 200 with JSON array of users
+
+- [x] T019b [P] [US1] Integration test: GET /api/users returns 200 OK with empty array when no users in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: FR-005, AS #2, SC-004
+  - **Test**: Given empty database, when GET /api/users called, then returns 200 with empty JSON array
+
+- [x] T019c [P] [US1] Integration test: GET /api/users returns JsonContentType in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Standard API behavior
+  - **Test**: When GET /api/users called, then Content-Type header is application/json
+
+#### Backend Contract Tests (REQUIRED per constitution - currently missing)
+
+- [ ] T019d [P] [US1] Contract test: GET /api/users response schema matches OpenAPI contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
+  - **Test**: When GET /api/users called, then response schema matches contracts/users-api.yaml (all fields, types, nullable constraints)
+
+- [ ] T019e [P] [US1] Contract test: GET /api/users validates required fields (id, email) are present in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
+  - **Test**: When GET /api/users called, then response contains all required fields (id, email) as specified in contract
+
+- [ ] T019f [P] [US1] Contract test: GET /api/users validates nullable username field handling in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
+  - **Test**: When GET /api/users called with nullable username, then response handles null values correctly per contract
+
+- [ ] T019g [P] [US1] Contract test: GET /api/users error response (500) schema matches contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
+  - **Test**: Given database error, when GET /api/users called, then 500 error response schema matches Error schema from contract
+
+- [ ] T019h [P] [US1] Contract test: GET /api/users status codes match contract (200, 500) in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+  - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
+  - **Test**: When GET /api/users called, then status codes (200, 500) match contract specification
+
+#### Frontend Service Tests
+
+- [x] T020 [P] [US1] Unit test: UserService.getUsers() makes HTTP GET request to /api/users in frontend/spec-kit-demo/src/app/services/user.service.spec.ts
+  - **Requirement**: FR-002
+  - **Test**: When getUsers() called, then HttpClient.get() called with correct URL
+
+#### Frontend Component Tests
+
+- [x] T021 [P] [US1] Component test: UserListComponent displays table with users when data loaded in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+  - **Requirement**: FR-001, FR-003, FR-004, AS #1, AS #3
+  - **Test**: Given users loaded, when component rendered, then table displays with username and email columns
+
+- [ ] T021b [P] [US1] Component test: UserListComponent displays "No users found" when empty (FR-005) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+  - **Requirement**: FR-005, AS #2, SC-004
+  - **Test**: Given empty user list, when component rendered, then "No users found" message displayed
+
+- [x] T021c [P] [US1] Component test: UserListComponent displays error message on API failure in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+  - **Requirement**: FR-006, EC #1
+  - **Test**: Given API error, when component loads, then error message displayed to user
 
 ### Implementation for User Story 1
 
@@ -90,6 +151,16 @@
 - [x] T034 [US1] Handle error state in UserListComponent (display user-friendly error message) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.ts
 - [x] T035 [US1] Add route for /users page in frontend/spec-kit-demo/src/app/app-routing.module.ts (or app.config.ts)
 - [x] T036 [US1] Add navigation link to /users route in app component (if needed) in frontend/spec-kit-demo/src/app/app.component.html
+
+### Test-to-Implementation Mapping for User Story 1
+
+| Implementation Task | Test Tasks That Verify It | Requirements Covered |
+|---------------------|---------------------------|----------------------|
+| T022: Implement UserService.GetUsersAsync() | T018, T018b | FR-002, FR-004, FR-005, AS #1, AS #2 |
+| T023: Implement GET /api/users endpoint | T019, T019b, T019c, T019d, T019e, T019f, T019g, T019h | FR-001, FR-002, FR-004, FR-005, AS #1, AS #2, Contract validation |
+| T024: Add error handling to controller | T019g, T021c | FR-006, EC #1 |
+| T033: Handle empty state in component | T018b, T019b, T021b | FR-005, AS #2, SC-004 |
+| T034: Handle error state in component | T021c | FR-006, EC #1 |
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently. Navigate to /users page and verify all users are displayed.
 

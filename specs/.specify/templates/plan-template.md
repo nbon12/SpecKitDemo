@@ -27,6 +27,25 @@
 **Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
+## Testing Strategy
+
+**Contract Testing**: When API contracts are defined in `contracts/` directory (OpenAPI/Swagger), contract testing is REQUIRED per constitution. All endpoints must have tests that validate:
+- Response schemas match the contract (all fields, types, nullable constraints)
+- Status codes match the contract (200, 400, 500, etc.)
+- Content-Type headers match the contract
+- Required fields are present and correctly typed
+- Nullable/optional fields are handled correctly
+- Error response schemas match the contract
+
+**Test Types Required**:
+- Unit tests: Service layer logic
+- Integration tests: API endpoints with database
+- Contract tests: API contract compliance (REQUIRED if contracts exist)
+- Frontend service tests: HTTP client interactions
+- Frontend component tests: Component logic and rendering
+
+**Test Isolation**: All tests must use isolated data per test run. Tests must assume parallel execution and potential stale data from previous runs.
+
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*

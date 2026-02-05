@@ -23,6 +23,7 @@ Create a greenfield web application with an Angular frontend and .NET Core backe
 **Testing**: 
 - Backend: xUnit, Moq, FluentAssertions
 - Frontend: Jasmine, Karma, Angular Testing Utilities
+- Contract Testing: OpenAPI schema validation (REQUIRED per constitution)
 
 **Target Platform**: Web application (browser-based frontend, REST API backend)
 
@@ -47,6 +48,33 @@ Create a greenfield web application with an Angular frontend and .NET Core backe
 - No authentication/authorization (handled separately per assumptions)
 - Single page: /users route
 - MVP scope: Display existing users only (no create/edit/delete)
+
+## Testing Strategy
+
+**Contract Testing**: API contracts are defined in `contracts/users-api.yaml` (OpenAPI 3.0.3). Contract testing is REQUIRED per constitution. The GET /api/users endpoint must have tests that validate:
+- Response schema matches the contract (all fields, types, nullable constraints)
+- Status codes match the contract (200, 500)
+- Content-Type headers match the contract (application/json)
+- Required fields are present and correctly typed (id, email)
+- Nullable/optional fields are handled correctly (username can be null)
+- Error response schemas match the contract (500 error with message field)
+
+**Test Types Required**:
+- Unit tests: Service layer logic (UserService)
+- Integration tests: API endpoints with database (UsersController)
+- Contract tests: API contract compliance (REQUIRED - currently missing)
+- Frontend service tests: HTTP client interactions (UserService)
+- Frontend component tests: Component logic and rendering (UserListComponent)
+
+**Test Isolation**: All tests must use isolated data per test run. Tests must assume parallel execution and potential stale data from previous runs.
+
+**New Tests Needed** (based on updated constitution):
+1. Contract test: GET /api/users response schema validation against OpenAPI spec
+2. Contract test: GET /api/users validates required fields (id, email) are present
+3. Contract test: GET /api/users validates nullable username field handling
+4. Contract test: GET /api/users error response (500) schema matches contract
+5. Contract test: GET /api/users status codes match contract (200, 500)
+6. Frontend component test: Empty state handling (FR-005): Verify "No users found" message displays
 
 ## Constitution Check
 
@@ -78,10 +106,19 @@ Create a greenfield web application with an Angular frontend and .NET Core backe
 ### Observability Standards
 ⚠️ **DEFERRED**: Observability infrastructure doesn't exist yet. Will be added when infrastructure exists per constitution.
 
+### API Contract Testing (REQUIRED for REST APIs)
+⚠️ **PARTIAL**: API contract exists (contracts/users-api.yaml) but contract tests are missing. Contract tests must be added to validate:
+- Response schema matches OpenAPI specification
+- Status codes match contract (200, 500)
+- Content-Type headers match contract
+- Required fields validation (id, email)
+- Nullable fields validation (username)
+- Error response schema validation
+
 ### Local Development Environment
 ✅ **PASS**: docker-compose.yaml will be created to start PostgreSQL and all services with single command.
 
-**GATE STATUS (Pre-Phase 0)**: ✅ PASS - All applicable principles satisfied. Security and observability deferred as out of scope.
+**GATE STATUS (Pre-Phase 0)**: ⚠️ PARTIAL - API Contract Testing requirement identified. Contract tests must be added to meet constitution requirements. Security and observability deferred as out of scope.
 
 ### Post-Phase 1 Design Re-evaluation
 
@@ -112,6 +149,15 @@ After completing Phase 1 design (data model, API contracts, quickstart):
 **Observability Standards**
 ⚠️ **DEFERRED**: Still out of scope. No logging/monitoring in design yet.
 
+**API Contract Testing (REQUIRED for REST APIs)**
+⚠️ **PARTIAL**: API contract exists (contracts/users-api.yaml) but contract tests are missing. Contract tests must be added per constitution to validate:
+- Response schema matches OpenAPI specification (all fields, types, nullable constraints)
+- Status codes match contract (200, 500)
+- Content-Type headers match contract (application/json)
+- Required fields validation (id, email must be present)
+- Nullable fields validation (username can be null)
+- Error response schema validation (500 error with message field)
+
 **Local Development Environment**
 ✅ **PASS**: docker-compose.yaml design documented in quickstart.md. Single command startup maintained.
 
@@ -127,7 +173,7 @@ After completing Phase 1 design (data model, API contracts, quickstart):
 - Frontend application: spec-kit-demo (kebab-case) ✓
 - Consistent naming across all artifacts ✓
 
-**GATE STATUS (Post-Phase 1)**: ✅ PASS - Design maintains compliance with all applicable principles.
+**GATE STATUS (Post-Phase 1)**: ⚠️ PARTIAL - API Contract Testing requirement identified. Contract tests must be added to meet constitution requirements. All other principles satisfied.
 
 ## Project Structure
 
@@ -191,5 +237,57 @@ docker-compose.yaml
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-No violations - all constitution principles satisfied or appropriately deferred.
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| Contract testing required | Constitution mandates contract testing for all API endpoints with OpenAPI specs | Manual validation rejected because automated contract tests prevent breaking changes and ensure API consistency |
+
+## Required Test Additions
+
+Based on the updated constitution (API Contract Testing requirement), the following tests must be added:
+
+### Backend Integration Tests (Contract Tests)
+
+**Location**: `backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs`
+
+1. **Contract Schema Validation Test**
+   - Validates GET /api/users response schema matches OpenAPI contract
+   - Verifies all fields (id, username, email) match contract types
+   - Verifies nullable constraints (username can be null)
+
+2. **Required Fields Validation Test**
+   - Validates required fields (id, email) are always present in response
+   - Verifies email field is never null
+
+3. **Nullable Fields Validation Test**
+   - Validates username field can be null per contract
+   - Verifies null username is handled correctly in response
+
+4. **Error Response Schema Validation Test**
+   - Validates 500 error response matches Error schema from contract
+   - Verifies error response contains message field
+
+5. **Status Code Validation Test**
+   - Validates all status codes (200, 500) match contract specification
+   - Verifies no unexpected status codes are returned
+
+6. **Empty State Response Test**
+   - Validates GET /api/users returns 200 OK with empty array when no users exist
+   - Verifies empty array response matches contract (array type, not null)
+
+### Frontend Component Tests
+
+**Location**: `frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts`
+
+1. **Empty State Handling Test (FR-005)**
+   - Verifies "No users found" message displays when user list is empty
+   - Tests that empty state message is shown in template when `users.length === 0`
+   - Validates empty state UI renders correctly without errors
+   - Requirement: FR-005, AS #2, SC-004
+
+### Implementation Notes
+
+- Contract tests should use OpenAPI schema validation library (e.g., Microsoft.OpenApi.Validators, or manual validation against contract)
+- Tests should validate against the actual contracts/users-api.yaml file
+- Contract tests should be part of integration test suite
+- All contract tests must pass before API implementation is considered complete per constitution
 
