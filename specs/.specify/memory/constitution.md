@@ -1,50 +1,88 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+Version: (none) → 1.0.0
+Added Principles:
+  - Test-Driven Development (NON-NEGOTIABLE)
+  - Test Isolation & Data Management
+  - Technology Stack Standards
+  - Simplicity & YAGNI
+  - Security by Design
+  - Observability Standards
+Added Sections:
+  - Development Workflow
+  - Local Development Environment (within Development Workflow)
+Templates Updated:
+  ✅ plan-template.md (Constitution Check section)
+  ✅ spec-template.md (verified alignment)
+  ✅ tasks-template.md (verified alignment)
+-->
+
+# Spec Kit Demo Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Test-Driven Development (NON-NEGOTIABLE)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Always write tests first, then implement minimum code to make tests pass. Red-Green-Refactor cycle strictly enforced. All features must have tests before implementation begins. Tests must be written and approved before any implementation code.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Rationale**: Ensures code quality, prevents regressions, and enforces clear requirements before implementation begins.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Test Isolation & Data Management
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Test data must be namespaced and isolated per test run. Tests must assume parallel execution and potential stale data from previous runs. Queries must only verify data from the current test run's namespace. Each test must be independently executable without dependencies on other tests.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Rationale**: Enables reliable parallel test execution and prevents test interdependencies that cause flaky test results.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### Technology Stack Standards
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Angular frontend with TypeScript. .NET Core backend API. PostgreSQL database. RESTful API design principles. If message queue is needed, implement with RabbitMQ.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: Establishes consistent technology choices across the project to reduce complexity and enable team collaboration.
+
+### Simplicity & YAGNI (You Aren't Gonna Need It)
+
+Implement only what's needed for current requirements. Avoid premature optimization and over-engineering. Start simple, add complexity only when justified by actual needs. Prefer simple solutions over complex ones.
+
+**Rationale**: Reduces maintenance burden, accelerates delivery, and prevents unnecessary complexity that hinders future development.
+
+### Security by Design
+
+When authentication, authorization, or data protection features are added, they must follow industry-standard patterns. Security considerations must be addressed in the planning phase, not as an afterthought. All security features must be implemented consistently across all services. Security must be testable and verifiable.
+
+**Rationale**: Ensures security is built into features from the start rather than retrofitted, reducing vulnerabilities and technical debt.
+
+### Observability Standards
+
+When logging, monitoring, or error tracking is added, it must follow structured logging patterns. Observability must be consistent across all services. All features must include appropriate observability from the start when observability infrastructure exists. Logging and monitoring must not expose sensitive information.
+
+**Rationale**: Enables effective debugging, performance monitoring, and operational insights while maintaining security and privacy.
+
+## Development Workflow
+
+### Feature Branch Strategy
+
+Each feature uses a small, focused branch following the pattern 001-feature-name, 002-feature-name, etc. One feature per branch.
+
+### Pull Request Process
+
+All features require a Pull Request to GitHub for code review before merge. PRs must be reviewed and approved before merging.
+
+### Quality Gates
+
+All Pull Requests must pass automated .NET unit tests via GitHub Actions before merge. Tests must pass for PR approval.
+
+### Code Review
+
+All PRs require review before merge. Reviews must verify compliance with constitution principles.
+
+### Local Development Environment
+
+The local project must be able to be started up using `docker-compose up`. All services, databases, and dependencies required for local development must be defined in `docker-compose.yaml` and start successfully with a single command.
+
+**Rationale**: Ensures consistent development environments across all team members and simplifies onboarding by eliminating manual setup steps.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Constitution supersedes all other practices and guidelines. Amendments require documentation, justification, and approval. All PRs and reviews must verify compliance with constitution principles. Complexity must be justified and documented. Violations of constitution principles must be addressed before merge.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.1 | **Ratified**: 2025-02-04 | **Last Amended**: 2025-02-04
