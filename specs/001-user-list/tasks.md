@@ -87,25 +87,25 @@
   - **Requirement**: Standard API behavior
   - **Test**: When GET /api/users called, then Content-Type header is application/json
 
-#### Backend Contract Tests (REQUIRED per constitution - currently missing)
+#### Backend Contract Tests (REQUIRED per constitution)
 
-- [ ] T019d [P] [US1] Contract test: GET /api/users response schema matches OpenAPI contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T019d [P] [US1] Contract test: GET /api/users response schema matches OpenAPI contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
   - **Test**: When GET /api/users called, then response schema matches contracts/users-api.yaml (all fields, types, nullable constraints)
 
-- [ ] T019e [P] [US1] Contract test: GET /api/users validates required fields (id, email) are present in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T019e [P] [US1] Contract test: GET /api/users validates required fields (id, email) are present in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
   - **Test**: When GET /api/users called, then response contains all required fields (id, email) as specified in contract
 
-- [ ] T019f [P] [US1] Contract test: GET /api/users validates nullable username field handling in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T019f [P] [US1] Contract test: GET /api/users validates nullable username field handling in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
   - **Test**: When GET /api/users called with nullable username, then response handles null values correctly per contract
 
-- [ ] T019g [P] [US1] Contract test: GET /api/users error response (500) schema matches contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T019g [P] [US1] Contract test: GET /api/users error response (500) schema matches contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
   - **Test**: Given database error, when GET /api/users called, then 500 error response schema matches Error schema from contract
 
-- [ ] T019h [P] [US1] Contract test: GET /api/users status codes match contract (200, 500) in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T019h [P] [US1] Contract test: GET /api/users status codes match contract (200, 500) in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
   - **Test**: When GET /api/users called, then status codes (200, 500) match contract specification
 
@@ -121,7 +121,7 @@
   - **Requirement**: FR-001, FR-003, FR-004, AS #1, AS #3
   - **Test**: Given users loaded, when component rendered, then table displays with username and email columns
 
-- [ ] T021b [P] [US1] Component test: UserListComponent displays "No users found" when empty (FR-005) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+- [x] T021b [P] [US1] Component test: UserListComponent displays "No users found" when empty (FR-005) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
   - **Requirement**: FR-005, AS #2, SC-004
   - **Test**: Given empty user list, when component rendered, then "No users found" message displayed
 

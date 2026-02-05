@@ -54,4 +54,22 @@ describe('UserListComponent', () => {
     expect(component.users).toEqual([]);
     expect(component.errorMessage).toBe('An error occurred while loading users. Please try again later.');
   });
+
+  it('should display "No users found" when empty (FR-005)', () => {
+    // Arrange - empty user list
+    userService.getUsers.and.returnValue(of([]));
+
+    // Act
+    fixture.detectChanges();
+
+    // Assert
+    expect(component.users).toEqual([]);
+    expect(component.errorMessage).toBeNull();
+    
+    // Verify empty state message is displayed in template
+    const compiled = fixture.nativeElement;
+    const emptyMessage = compiled.querySelector('.empty-message');
+    expect(emptyMessage).toBeTruthy();
+    expect(emptyMessage.textContent.trim()).toBe('No users found.');
+  });
 });
