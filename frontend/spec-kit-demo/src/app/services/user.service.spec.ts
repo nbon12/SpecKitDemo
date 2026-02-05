@@ -36,7 +36,8 @@ describe('UserService', () => {
       expect(users).toEqual(mockUsers);
     });
 
-    const req = httpMock.expectOne('http://localhost:5000/api/users');
+    // Keep this aligned with the service's configured API URL.
+    const req = httpMock.expectOne('http://localhost:5008/api/users');
     expect(req.request.method).toBe('GET');
     req.flush(mockUsers);
   });

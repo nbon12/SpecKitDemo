@@ -91,7 +91,7 @@
 
 - [x] T019d [P] [US1] Contract test: GET /api/users response schema matches OpenAPI contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
-  - **Test**: When GET /api/users called, then response schema matches contracts/users-api.yaml (all fields, types, nullable constraints)
+  - **Test**: When GET /api/users called, then response schema matches contracts/users-api.yaml (includes `id` (required int32), `email` (required), `username` (nullable), and array shape)
 
 - [x] T019e [P] [US1] Contract test: GET /api/users validates required fields (id, email) are present in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
@@ -103,7 +103,7 @@
 
 - [x] T019g [P] [US1] Contract test: GET /api/users error response (500) schema matches contract in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
-  - **Test**: Given database error, when GET /api/users called, then 500 error response schema matches Error schema from contract
+  - **Test**: Given database error, when GET /api/users called, then 500 error response schema matches Error schema from contract (`{ "message": "<string>" }`)
 
 - [x] T019h [P] [US1] Contract test: GET /api/users status codes match contract (200, 500) in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
   - **Requirement**: Contract validation - REQUIRED if contracts/users-api.yaml exists per constitution
@@ -123,17 +123,17 @@
 
 - [x] T021b [P] [US1] Component test: UserListComponent displays "No users found" when empty (FR-005) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
   - **Requirement**: FR-005, AS #2, SC-004
-  - **Test**: Given empty user list, when component rendered, then "No users found" message displayed
+  - **Test**: Given empty user list, when component rendered, then **"No users found."** message displayed
 
 - [x] T021c [P] [US1] Component test: UserListComponent displays error message on API failure in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
   - **Requirement**: FR-006, EC #1
-  - **Test**: Given API error, when component loads, then error message displayed to user
+  - **Test**: Given API error, when component loads, then error message **"An error occurred while loading users. Please try again later."** is displayed to user
 
 ### Implementation for User Story 1
 
 #### Backend Implementation
 
-- [x] T022 [US1] Implement UserService in backend/SpecKitDemoApi/Services/UserService.cs with GetUsers() method that returns all users from database
+- [x] T022 [US1] Implement UserService in backend/SpecKitDemoApi/Services/UserService.cs with GetUsersAsync() method that returns all users from database
 - [x] T023 [US1] Implement UsersController in backend/SpecKitDemoApi/Controllers/UsersController.cs with GET /api/users endpoint that calls UserService
 - [x] T024 [US1] Add error handling to UsersController for database errors (returns 500 with user-friendly message) in backend/SpecKitDemoApi/Controllers/UsersController.cs
 - [x] T025 [US1] Register UserService in dependency injection container in backend/SpecKitDemoApi/Program.cs
@@ -220,7 +220,7 @@
 
 ```bash
 # Launch all tests for User Story 1 together:
-Task T018: "Create unit test for UserService.GetUsers() in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs"
+Task T018: "Create unit test for UserService.GetUsersAsync() in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs"
 Task T019: "Create integration test for GET /api/users endpoint in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs"
 Task T020: "Create unit test for UserService in frontend/spec-kit-demo/src/app/services/user.service.spec.ts"
 Task T021: "Create component test for UserListComponent in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts"

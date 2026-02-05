@@ -1,186 +1,63 @@
-# Implementation Plan: User List Display
+# Implementation Plan: [FEATURE]
 
-**Branch**: `001-user-list` | **Date**: 2025-01-27 | **Spec**: [spec.md](./spec.md)
-**Input**: Feature specification from `/specs/001-user-list/spec.md`
+**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
+**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+
+**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
 ## Summary
 
-Create a greenfield web application with an Angular frontend and .NET Core backend API that displays a list of users from a PostgreSQL database. The feature includes setting up the complete infrastructure: PostgreSQL database via docker-compose, .NET Core API with Entity Framework Core, and Angular frontend application. Users can navigate to a users page to view all users in a table format showing username and email address.
+[Extract from feature spec: primary requirement + technical approach from research]
 
 ## Technical Context
 
-**Language/Version**: 
-- Backend: .NET 8.0 (C#)
-- Frontend: Angular 17+ with TypeScript 5.x
+<!--
+  ACTION REQUIRED: Replace the content in this section with the technical details
+  for the project. The structure here is presented in advisory capacity to guide
+  the iteration process.
+-->
 
-**Primary Dependencies**: 
-- Backend: Entity Framework Core, ASP.NET Core Web API, Npgsql.EntityFrameworkCore.PostgreSQL
-- Frontend: Angular CLI, Angular Material (for table component), RxJS
-- Infrastructure: Docker, docker-compose, PostgreSQL 15+
-
-**Storage**: PostgreSQL 15+ database
-
-**Testing**: 
-- Backend: xUnit, Moq, FluentAssertions
-- Frontend: Jasmine, Karma, Angular Testing Utilities
-- Contract Testing: OpenAPI schema validation (REQUIRED per constitution)
-
-**Target Platform**: Web application (browser-based frontend, REST API backend)
-
-**Project Type**: Web application (frontend + backend)
-
-**Performance Goals**: 
-- Users can view the complete list within 2 seconds of navigating to the page (per SC-001)
-- API response time: <500ms for user list retrieval
-
-**Constraints**: 
-- Must be startable via `docker-compose up` per constitution
-- No pagination initially (YAGNI principle)
-- Load all users at once
-- Email is required (NOT NULL), username is optional (nullable)
-- Both username and email must be unique
-- Angular components/services MUST be created using Angular CLI (`ng generate`) per constitution
-- .NET API projects MUST be created using `dotnet new webapi -n <name>` per constitution
-- Project naming MUST use "Spec Kit Demo" as the base name per constitution (backend: SpecKitDemoApi, frontend: spec-kit-demo)
-
-**Scale/Scope**: 
-- Initial implementation: Simple user list display
-- No authentication/authorization (handled separately per assumptions)
-- Single page: /users route
-- MVP scope: Display existing users only (no create/edit/delete)
+**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
+**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
+**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
+**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
+**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Project Type**: [single/web/mobile - determines source structure]  
+**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
+**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
+**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
 ## Testing Strategy
 
-**Contract Testing**: API contracts are defined in `contracts/users-api.yaml` (OpenAPI 3.0.3). Contract testing is REQUIRED per constitution. The GET /api/users endpoint must have tests that validate:
-- Response schema matches the contract (all fields, types, nullable constraints)
-- Status codes match the contract (200, 500)
-- Content-Type headers match the contract (application/json)
-- Required fields are present and correctly typed (id, email)
-- Nullable/optional fields are handled correctly (username can be null)
-- Error response schemas match the contract (500 error with message field)
+**Contract Testing**: When API contracts are defined in `contracts/` directory (OpenAPI/Swagger), contract testing is REQUIRED per constitution. All endpoints must have tests that validate:
+- Response schemas match the contract (all fields, types, nullable constraints)
+- Status codes match the contract (200, 400, 500, etc.)
+- Content-Type headers match the contract
+- Required fields are present and correctly typed
+- Nullable/optional fields are handled correctly
+- Error response schemas match the contract
 
 **Test Types Required**:
-- Unit tests: Service layer logic (UserService)
-- Integration tests: API endpoints with database (UsersController)
-- Contract tests: API contract compliance (REQUIRED - currently missing)
-- Frontend service tests: HTTP client interactions (UserService)
-- Frontend component tests: Component logic and rendering (UserListComponent)
+- Unit tests: Service layer logic
+- Integration tests: API endpoints with database
+- Contract tests: API contract compliance (REQUIRED if contracts exist)
+- Frontend service tests: HTTP client interactions
+- Frontend component tests: Component logic and rendering
 
 **Test Isolation**: All tests must use isolated data per test run. Tests must assume parallel execution and potential stale data from previous runs.
-
-**New Tests Needed** (based on updated constitution):
-1. Contract test: GET /api/users response schema validation against OpenAPI spec
-2. Contract test: GET /api/users validates required fields (id, email) are present
-3. Contract test: GET /api/users validates nullable username field handling
-4. Contract test: GET /api/users error response (500) schema matches contract
-5. Contract test: GET /api/users status codes match contract (200, 500)
-6. Frontend component test: Empty state handling (FR-005): Verify "No users found" message displays
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Test-Driven Development (NON-NEGOTIABLE)
-✅ **PASS**: Tests will be written before implementation. Backend API tests and frontend component tests required.
-
-### Test Isolation & Data Management
-✅ **PASS**: Test data will be namespaced. Each test run will use isolated data. Tests must be independently executable.
-
-### Technology Stack Standards
-✅ **PASS**: 
-- Angular frontend with TypeScript ✓
-- .NET Core backend API ✓
-- PostgreSQL database ✓
-- RESTful API design ✓
-
-### Simplicity & YAGNI
-✅ **PASS**: 
-- No pagination (deferred) ✓
-- No loading indicators (simple empty table approach) ✓
-- No authentication/authorization (out of scope) ✓
-- Simple table display only ✓
-
-### Security by Design
-⚠️ **DEFERRED**: Authentication/authorization handled separately per assumptions. No security features in this feature scope.
-
-### Observability Standards
-⚠️ **DEFERRED**: Observability infrastructure doesn't exist yet. Will be added when infrastructure exists per constitution.
-
-### API Contract Testing (REQUIRED for REST APIs)
-⚠️ **PARTIAL**: API contract exists (contracts/users-api.yaml) but contract tests are missing. Contract tests must be added to validate:
-- Response schema matches OpenAPI specification
-- Status codes match contract (200, 500)
-- Content-Type headers match contract
-- Required fields validation (id, email)
-- Nullable fields validation (username)
-- Error response schema validation
-
-### Local Development Environment
-✅ **PASS**: docker-compose.yaml will be created to start PostgreSQL and all services with single command.
-
-**GATE STATUS (Pre-Phase 0)**: ⚠️ PARTIAL - API Contract Testing requirement identified. Contract tests must be added to meet constitution requirements. Security and observability deferred as out of scope.
-
-### Post-Phase 1 Design Re-evaluation
-
-After completing Phase 1 design (data model, API contracts, quickstart):
-
-**Test-Driven Development (NON-NEGOTIABLE)**
-✅ **PASS**: Design supports TDD approach. API contracts defined for contract testing. Data model enables unit testing of services.
-
-**Test Isolation & Data Management**
-✅ **PASS**: Data model design supports test isolation. Each test can use isolated database context. No shared state dependencies.
-
-**Technology Stack Standards**
-✅ **PASS**: All design artifacts align with constitution stack:
-- Entity Framework Core for data access ✓
-- RESTful API design ✓
-- Angular Material for UI components ✓
-- PostgreSQL schema design ✓
-
-**Simplicity & YAGNI**
-✅ **PASS**: Design maintains simplicity:
-- Single GET endpoint (no pagination, filtering, sorting) ✓
-- Simple data model (single entity, no relationships) ✓
-- Minimal API surface area ✓
-
-**Security by Design**
-⚠️ **DEFERRED**: Still out of scope. No authentication/authorization in design.
-
-**Observability Standards**
-⚠️ **DEFERRED**: Still out of scope. No logging/monitoring in design yet.
-
-**API Contract Testing (REQUIRED for REST APIs)**
-⚠️ **PARTIAL**: API contract exists (contracts/users-api.yaml) but contract tests are missing. Contract tests must be added per constitution to validate:
-- Response schema matches OpenAPI specification (all fields, types, nullable constraints)
-- Status codes match contract (200, 500)
-- Content-Type headers match contract (application/json)
-- Required fields validation (id, email must be present)
-- Nullable fields validation (username can be null)
-- Error response schema validation (500 error with message field)
-
-**Local Development Environment**
-✅ **PASS**: docker-compose.yaml design documented in quickstart.md. Single command startup maintained.
-
-**Development Tooling Preferences**
-✅ **PASS**: Plan specifies use of CLI scaffolding:
-- Angular components/services will use `ng generate` commands ✓
-- .NET API project will use `dotnet new webapi -n <name>` ✓
-- Quickstart.md documents CLI commands for project setup ✓
-
-**Naming Conventions**
-✅ **PASS**: Plan uses "Spec Kit Demo" as project name base:
-- Backend API project: SpecKitDemoApi (PascalCase, no spaces) ✓
-- Frontend application: spec-kit-demo (kebab-case) ✓
-- Consistent naming across all artifacts ✓
-
-**GATE STATUS (Post-Phase 1)**: ⚠️ PARTIAL - API Contract Testing requirement identified. Contract tests must be added to meet constitution requirements. All other principles satisfied.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
 ### Documentation (this feature)
 
 ```text
-specs/001-user-list/
+specs/[###-feature]/
 ├── plan.md              # This file (/speckit.plan command output)
 ├── research.md          # Phase 0 output (/speckit.plan command)
 ├── data-model.md        # Phase 1 output (/speckit.plan command)
@@ -190,48 +67,51 @@ specs/001-user-list/
 ```
 
 ### Source Code (repository root)
+<!--
+  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
+  for this feature. Delete unused options and expand the chosen structure with
+  real paths (e.g., apps/admin, packages/something). The delivered plan must
+  not include Option labels.
+-->
 
 ```text
+# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+src/
+├── models/
+├── services/
+├── cli/
+└── lib/
+
+tests/
+├── contract/
+├── integration/
+└── unit/
+
+# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
 backend/
-├── SpecKitDemoApi/
-│   ├── Models/
-│   │   └── User.cs
-│   ├── Services/
-│   │   └── UserService.cs
-│   ├── Controllers/
-│   │   └── UsersController.cs
-│   ├── Data/
-│   │   └── ApplicationDbContext.cs
-│   └── Program.cs
+├── src/
+│   ├── models/
+│   ├── services/
+│   └── api/
 └── tests/
-    ├── unit/
-    │   └── Services/
-    │       └── UserServiceTests.cs
-    └── integration/
-        └── Controllers/
-            └── UsersControllerTests.cs
 
 frontend/
-├── spec-kit-demo/
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── components/
-│   │   │   │   └── user-list/
-│   │   │   │       ├── user-list.component.ts
-│   │   │   │       ├── user-list.component.html
-│   │   │   │       └── user-list.component.spec.ts
-│   │   │   ├── services/
-│   │   │   │   └── user.service.ts
-│   │   │   ├── models/
-│   │   │   │   └── user.model.ts
-│   │   │   └── app-routing.module.ts
-│   │   └── main.ts
-│   └── tests/
+├── src/
+│   ├── components/
+│   ├── pages/
+│   └── services/
+└── tests/
 
-docker-compose.yaml
+# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
+api/
+└── [same as backend above]
+
+ios/ or android/
+└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
-**Structure Decision**: Web application structure selected (Option 2) because the feature requires both frontend (Angular) and backend (.NET API) components. The structure separates concerns clearly: backend handles data access and API, frontend handles presentation. Docker-compose.yaml at root for local development environment setup.
+**Structure Decision**: [Document the selected structure and reference the real
+directories captured above]
 
 ## Complexity Tracking
 
@@ -239,55 +119,5 @@ docker-compose.yaml
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 |-----------|------------|-------------------------------------|
-| Contract testing required | Constitution mandates contract testing for all API endpoints with OpenAPI specs | Manual validation rejected because automated contract tests prevent breaking changes and ensure API consistency |
-
-## Required Test Additions
-
-Based on the updated constitution (API Contract Testing requirement), the following tests must be added:
-
-### Backend Integration Tests (Contract Tests)
-
-**Location**: `backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs`
-
-1. **Contract Schema Validation Test**
-   - Validates GET /api/users response schema matches OpenAPI contract
-   - Verifies all fields (id, username, email) match contract types
-   - Verifies nullable constraints (username can be null)
-
-2. **Required Fields Validation Test**
-   - Validates required fields (id, email) are always present in response
-   - Verifies email field is never null
-
-3. **Nullable Fields Validation Test**
-   - Validates username field can be null per contract
-   - Verifies null username is handled correctly in response
-
-4. **Error Response Schema Validation Test**
-   - Validates 500 error response matches Error schema from contract
-   - Verifies error response contains message field
-
-5. **Status Code Validation Test**
-   - Validates all status codes (200, 500) match contract specification
-   - Verifies no unexpected status codes are returned
-
-6. **Empty State Response Test**
-   - Validates GET /api/users returns 200 OK with empty array when no users exist
-   - Verifies empty array response matches contract (array type, not null)
-
-### Frontend Component Tests
-
-**Location**: `frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts`
-
-1. **Empty State Handling Test (FR-005)**
-   - Verifies "No users found" message displays when user list is empty
-   - Tests that empty state message is shown in template when `users.length === 0`
-   - Validates empty state UI renders correctly without errors
-   - Requirement: FR-005, AS #2, SC-004
-
-### Implementation Notes
-
-- Contract tests should use OpenAPI schema validation library (e.g., Microsoft.OpenApi.Validators, or manual validation against contract)
-- Tests should validate against the actual contracts/users-api.yaml file
-- Contract tests should be part of integration test suite
-- All contract tests must pass before API implementation is considered complete per constitution
-
+| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
+| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
