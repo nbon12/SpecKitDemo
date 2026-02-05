@@ -22,12 +22,12 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create docker-compose.yaml at repository root with PostgreSQL service
-- [ ] T002 [P] Create backend directory structure
-- [ ] T003 [P] Create frontend directory structure
-- [ ] T004 Create backend project using `dotnet new webapi -n SpecKitDemoApi` in backend/ directory (per constitution)
-- [ ] T005 Create frontend project using `ng new spec-kit-demo` in frontend/ directory (per constitution naming convention)
-- [ ] T006 [P] Add Angular Material to frontend using `ng add @angular/material` in frontend/spec-kit-demo/
+- [x] T001 Create docker-compose.yaml at repository root with PostgreSQL service
+- [x] T002 [P] Create backend directory structure
+- [x] T003 [P] Create frontend directory structure
+- [x] T004 Create backend project using `dotnet new webapi -n SpecKitDemoApi` in backend/ directory (per constitution)
+- [x] T005 Create frontend project using `ng new spec-kit-demo` in frontend/ directory (per constitution naming convention)
+- [x] T006 [P] Add Angular Material to frontend using `ng add @angular/material` in frontend/spec-kit-demo/
 
 ---
 
@@ -37,17 +37,17 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Add Entity Framework Core packages to backend: `dotnet add package Microsoft.EntityFrameworkCore` in backend/SpecKitDemoApi/
-- [ ] T008 Add Entity Framework Core Design Tools to backend: `dotnet add package Microsoft.EntityFrameworkCore.Design` in backend/SpecKitDemoApi/
-- [ ] T009 Add PostgreSQL provider to backend: `dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL` in backend/SpecKitDemoApi/
-- [ ] T010 Create ApplicationDbContext in backend/SpecKitDemoApi/Data/ApplicationDbContext.cs
-- [ ] T011 Configure database connection string in backend/SpecKitDemoApi/appsettings.json
-- [ ] T012 Configure EF Core in backend/SpecKitDemoApi/Program.cs (AddDbContext, UseNpgsql)
-- [ ] T013 Create User model in backend/SpecKitDemoApi/Models/User.cs with Id, Username (nullable), Email (required) properties
-- [ ] T014 Configure User entity in ApplicationDbContext with unique constraints on Username and Email in backend/SpecKitDemoApi/Data/ApplicationDbContext.cs
-- [ ] T015 Create initial EF Core migration using `dotnet ef migrations add InitialCreate` in backend/SpecKitDemoApi/ (per constitution)
-- [ ] T016 Apply migration to database using `dotnet ef database update` in backend/SpecKitDemoApi/ (per constitution)
-- [ ] T017 Configure CORS in backend/SpecKitDemoApi/Program.cs to allow requests from http://localhost:4200
+- [x] T007 Add Entity Framework Core packages to backend: `dotnet add package Microsoft.EntityFrameworkCore` in backend/SpecKitDemoApi/
+- [x] T008 Add Entity Framework Core Design Tools to backend: `dotnet add package Microsoft.EntityFrameworkCore.Design` in backend/SpecKitDemoApi/
+- [x] T009 Add PostgreSQL provider to backend: `dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL` in backend/SpecKitDemoApi/
+- [x] T010 Create ApplicationDbContext in backend/SpecKitDemoApi/Data/ApplicationDbContext.cs
+- [x] T011 Configure database connection string in backend/SpecKitDemoApi/appsettings.json
+- [x] T012 Configure EF Core in backend/SpecKitDemoApi/Program.cs (AddDbContext, UseNpgsql)
+- [x] T013 Create User model in backend/SpecKitDemoApi/Models/User.cs with Id, Username (nullable), Email (required) properties
+- [x] T014 Configure User entity in ApplicationDbContext with unique constraints on Username and Email in backend/SpecKitDemoApi/Data/ApplicationDbContext.cs
+- [x] T015 Create initial EF Core migration using `dotnet ef migrations add InitialCreate` in backend/SpecKitDemoApi/ (per constitution)
+- [x] T016 Apply migration to database using `dotnet ef database update` in backend/SpecKitDemoApi/ (per constitution)
+- [x] T017 Configure CORS in backend/SpecKitDemoApi/Program.cs to allow requests from http://localhost:4200
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -63,33 +63,33 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T018 [P] [US1] Create unit test for UserService.GetUsers() in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs
-- [ ] T019 [P] [US1] Create integration test for GET /api/users endpoint in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
-- [ ] T020 [P] [US1] Create unit test for UserService in frontend/spec-kit-demo/src/app/services/user.service.spec.ts - test HTTP call to /api/users
-- [ ] T021 [P] [US1] Create component test for UserListComponent in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
+- [x] T018 [P] [US1] Create unit test for UserService.GetUsers() in backend/SpecKitDemoApi/tests/unit/Services/UserServiceTests.cs
+- [x] T019 [P] [US1] Create integration test for GET /api/users endpoint in backend/SpecKitDemoApi/tests/integration/Controllers/UsersControllerTests.cs
+- [x] T020 [P] [US1] Create unit test for UserService in frontend/spec-kit-demo/src/app/services/user.service.spec.ts - test HTTP call to /api/users
+- [x] T021 [P] [US1] Create component test for UserListComponent in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.spec.ts
 
 ### Implementation for User Story 1
 
 #### Backend Implementation
 
-- [ ] T022 [US1] Implement UserService in backend/SpecKitDemoApi/Services/UserService.cs with GetUsers() method that returns all users from database
-- [ ] T023 [US1] Implement UsersController in backend/SpecKitDemoApi/Controllers/UsersController.cs with GET /api/users endpoint that calls UserService
-- [ ] T024 [US1] Add error handling to UsersController for database errors (returns 500 with user-friendly message) in backend/SpecKitDemoApi/Controllers/UsersController.cs
-- [ ] T025 [US1] Register UserService in dependency injection container in backend/SpecKitDemoApi/Program.cs
+- [x] T022 [US1] Implement UserService in backend/SpecKitDemoApi/Services/UserService.cs with GetUsers() method that returns all users from database
+- [x] T023 [US1] Implement UsersController in backend/SpecKitDemoApi/Controllers/UsersController.cs with GET /api/users endpoint that calls UserService
+- [x] T024 [US1] Add error handling to UsersController for database errors (returns 500 with user-friendly message) in backend/SpecKitDemoApi/Controllers/UsersController.cs
+- [x] T025 [US1] Register UserService in dependency injection container in backend/SpecKitDemoApi/Program.cs
 
 #### Frontend Implementation
 
-- [ ] T026 [P] [US1] Generate UserListComponent using `ng generate component user-list` in frontend/spec-kit-demo/src/app/components/ (per constitution)
-- [ ] T027 [P] [US1] Generate UserService using `ng generate service user` in frontend/spec-kit-demo/src/app/services/ (per constitution)
-- [ ] T028 [US1] Create User model interface in frontend/spec-kit-demo/src/app/models/user.model.ts with id, username (nullable), email properties
-- [ ] T029 [US1] Implement UserService.getUsers() method in frontend/spec-kit-demo/src/app/services/user.service.ts to call GET /api/users
-- [ ] T030 [US1] Configure HttpClient in frontend/spec-kit-demo/src/app/app.config.ts (or app.module.ts) for API calls
-- [ ] T031 [US1] Implement UserListComponent to fetch users from UserService and display in Angular Material table in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.ts
-- [ ] T032 [US1] Add Angular Material table to user-list.component.html with columns for username and email in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.html
-- [ ] T033 [US1] Handle empty state in UserListComponent (display message when no users exist) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.html
-- [ ] T034 [US1] Handle error state in UserListComponent (display user-friendly error message) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.ts
-- [ ] T035 [US1] Add route for /users page in frontend/spec-kit-demo/src/app/app-routing.module.ts (or app.config.ts)
-- [ ] T036 [US1] Add navigation link to /users route in app component (if needed) in frontend/spec-kit-demo/src/app/app.component.html
+- [x] T026 [P] [US1] Generate UserListComponent using `ng generate component user-list` in frontend/spec-kit-demo/src/app/components/ (per constitution)
+- [x] T027 [P] [US1] Generate UserService using `ng generate service user` in frontend/spec-kit-demo/src/app/services/ (per constitution)
+- [x] T028 [US1] Create User model interface in frontend/spec-kit-demo/src/app/models/user.model.ts with id, username (nullable), email properties
+- [x] T029 [US1] Implement UserService.getUsers() method in frontend/spec-kit-demo/src/app/services/user.service.ts to call GET /api/users
+- [x] T030 [US1] Configure HttpClient in frontend/spec-kit-demo/src/app/app.config.ts (or app.module.ts) for API calls
+- [x] T031 [US1] Implement UserListComponent to fetch users from UserService and display in Angular Material table in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.ts
+- [x] T032 [US1] Add Angular Material table to user-list.component.html with columns for username and email in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.html
+- [x] T033 [US1] Handle empty state in UserListComponent (display message when no users exist) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.html
+- [x] T034 [US1] Handle error state in UserListComponent (display user-friendly error message) in frontend/spec-kit-demo/src/app/components/user-list/user-list.component.ts
+- [x] T035 [US1] Add route for /users page in frontend/spec-kit-demo/src/app/app-routing.module.ts (or app.config.ts)
+- [x] T036 [US1] Add navigation link to /users route in app component (if needed) in frontend/spec-kit-demo/src/app/app.component.html
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently. Navigate to /users page and verify all users are displayed.
 
@@ -99,14 +99,15 @@
 
 **Purpose**: Improvements that affect the feature
 
-- [ ] T037 [P] Verify all tests pass: `dotnet test` in backend/SpecKitDemoApi/ and `ng test` in frontend/spec-kit-demo/
-- [ ] T038 [P] Run quickstart.md validation - verify all setup steps work correctly
-- [ ] T039 Code cleanup and refactoring (remove unused code, improve naming)
-- [ ] T040 Update README.md with setup and run instructions (if exists)
-- [ ] T041 Verify docker-compose.yaml starts PostgreSQL successfully
-- [ ] T042 Verify backend API runs with `dotnet run` in backend/SpecKitDemoApi/
-- [ ] T043 Verify frontend runs with `ng serve` in frontend/spec-kit-demo/
-- [ ] T044 Verify end-to-end flow: database → API → frontend displays users correctly
+- [x] T037 [P] Verify all tests pass: `dotnet test` in backend/SpecKitDemoApi/ and `ng test` in frontend/spec-kit-demo/
+- [x] T038 [P] Run quickstart.md validation - verify all setup steps work correctly
+- [x] T039 Code cleanup and refactoring (remove unused code, improve naming)
+- [x] T040 Update README.md with setup and run instructions (if exists)
+- [x] T041 Verify docker-compose.yaml starts PostgreSQL successfully
+- [x] T042 Verify backend API runs with `dotnet run` in backend/SpecKitDemoApi/
+- [x] T043 Verify frontend runs with `ng serve` in frontend/spec-kit-demo/
+- [x] T044 Verify end-to-end flow: database → API → frontend displays users correctly
+ 
 
 ---
 

@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: speckit-demo-postgres
+    environment:
+      POSTGRES_USER: speckit_user
+      POSTGRES_PASSWORD: speckit_password
+      POSTGRES_DB: speckit_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U speckit_user -d speckit_demo"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
