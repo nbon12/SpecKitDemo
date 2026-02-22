@@ -1,0 +1,6 @@
+@SpecKitDemoApi_HostAddress = http://localhost:5008
+
+GET {{SpecKitDemoApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
